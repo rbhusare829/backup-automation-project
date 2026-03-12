@@ -2,15 +2,17 @@
 
 ## 📌 Project Overview
 
-This project demonstrates an **automated backup system** running on AWS EC2.
+This project demonstrates an **automated backup system** running on **AWS EC2**.
 
 The system automatically:
 
 * Compresses project files
 * Uploads backups to Google Drive
 * Deletes old backups
-* Logs activities
+* Logs backup activity
 * Runs automatically using cron jobs
+
+This simulates a **real-world DevOps backup strategy** used in production systems.
 
 ---
 
@@ -72,11 +74,13 @@ t2.micro
 
 ### 📸 EC2 Instance Running
 
-![EC2 Instance](./)
+![EC2 Instance Running](./screenshots/Screenshot%202026-03-12%20155519.png)
 
 ---
 
 # ⚙️ Step 2 — Install rclone
+
+Install rclone on EC2:
 
 ```
 curl https://rclone.org/install.sh | sudo bash
@@ -92,11 +96,13 @@ rclone version
 
 # ⚙️ Step 3 — Configure Google Drive
 
+Run configuration:
+
 ```
 rclone config
 ```
 
-Select:
+Select options:
 
 ```
 n → new remote
@@ -107,32 +113,35 @@ scope → 1
 
 ### 📸 Google Account Authorization
 
-![Google Login](screenshots/google-account.png)
+![Google Account Authorization](./screenshots/Screenshot%202026-03-12%20152815.png)
 
-### 📸 Google Authentication Success
+### 📸 rclone Authorization Success
 
-![Auth Success](screenshots/google-auth-success.png)
+![rclone Authorization Success](./screenshots/Screenshot%202026-03-12%20152759.png)
 
 ---
 
 # ⚙️ Step 4 — Create Backup Script
 
-Create file:
+Create the script:
 
 ```
 nano backup_script.sh
 ```
 
-Paste script:
+Script:
 
 ```bash
 #!/bin/bash
 
 PROJECT_NAME="devops-project"
+
 SOURCE_DIR="/home/ec2-user/backup-automation-project"
+
 BACKUP_DIR="/home/ec2-user/backup-automation-project/backups"
 
 DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+
 BACKUP_FILE="$PROJECT_NAME-$DATE.tar.gz"
 
 echo "Backup started at $(date)" >> backup.log
@@ -159,9 +168,9 @@ chmod +x backup_script.sh
 ./backup_script.sh
 ```
 
-### 📸 Backup Script Running
+### 📸 Backup Script Execution
 
-![Backup Script](screenshots/backup-script.png)
+![Backup Script Execution](./screenshots/Screenshot%202026-03-12%20154648.png)
 
 ---
 
@@ -173,7 +182,7 @@ rclone ls gdrive:backup-folder
 
 ### 📸 Backup Uploaded to Google Drive
 
-![Google Drive Backup](screenshots/google-drive-backup.png)
+![Backup Uploaded to Google Drive](./screenshots/Screenshot%202026-03-12%20154619.png)
 
 ---
 
@@ -211,7 +220,15 @@ Add:
 
 ### 📸 Cron Job Running
 
-![Cron Job](screenshots/cron-job.png)
+![Cron Job Running](./screenshots/Screenshot%202026-03-12%20154709.png)
+
+---
+
+# ⚙️ Step 9 — rclone Authorization
+
+### 📸 rclone Authorization Terminal
+
+![rclone Authorization Terminal](./screenshots/Screenshot%202026-03-12%20154531.png)
 
 ---
 
@@ -223,7 +240,14 @@ backup-automation-project
 ├── backup_script.sh
 ├── backup.log
 ├── README.md
-└── screenshots
+└── screenshots/
+    ├── Screenshot 2026-03-12 152759.png
+    ├── Screenshot 2026-03-12 152815.png
+    ├── Screenshot 2026-03-12 154531.png
+    ├── Screenshot 2026-03-12 154619.png
+    ├── Screenshot 2026-03-12 154648.png
+    ├── Screenshot 2026-03-12 154709.png
+    └── Screenshot 2026-03-12 155519.png
 ```
 
 ---
@@ -244,5 +268,5 @@ This project demonstrates:
 
 **Rohit Bhusare**
 
-Aspiring DevOps Engineer
+Aspiring DevOps Engineer  
 AWS • Linux • Automation • CI/CD
